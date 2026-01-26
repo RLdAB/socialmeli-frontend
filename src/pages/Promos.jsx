@@ -4,16 +4,13 @@ import { api } from "../services/api.js";
 import PostCard from "../components/PostCard.jsx";
 
 export default function Promos() {
-  console.log(">>> Promos RENDER");
   const { userId } = useParams();
-  console.log(">>> Promos userId:", userId);
+
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    console.log(">>> Promos useEffect DISPAROU", userId);
-
     let alive = true;
     setLoading(true);
     setError("");
