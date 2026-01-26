@@ -5,10 +5,22 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      "/users": "http://localhost:8080",
-      "/products": "http://localhost:8080",
-      "/sellers": "http://localhost:8080",
-      "/swagger": "http://localhost:8080",
+      "/users": {
+        target: "http://localhost:8080",
+        changeOrigin: true,
+      },
+      "/products": {
+        target: "http://localhost:8080",
+        changeOrigin: true,
+      },
+      "/sellers": {
+        target: "http://localhost:8080",
+        changeOrigin: true,
+      },
+      "/swagger": {
+        target: "http://localhost:8080",
+        changeOrigin: true,
+      },
     },
   },
 });

@@ -8,11 +8,15 @@ export default function Navigation({ activeUserId, onChangeUser }) {
 
       <nav style={{ display: "flex", gap: 12 }}>
         <Link to="/">Home</Link>
-        <Link to={`/users/${activeUserId}/followers`}>Quem me segue</Link>
-        <Link to={`/users/${activeUserId}/followed`}>Quem eu sigo</Link>
-        <Link to={`/users/${activeUserId}/feed`}>Feed</Link>
+        <Link to="/users">Usuarios</Link>
+        <Link to="/followers">Seguidos</Link>
+        <Link to={`/users/${activeUserId}/followed`}>Seguidores</Link>
+        <Link to="/posts">Posts</Link>
         <Link to="/publish">Criar publicação</Link>
         <Link to={`/users/${activeUserId}/promos`}>Promoções</Link>
+
+
+
       </nav>
 
       <div style={{ marginLeft: "auto" }}>
