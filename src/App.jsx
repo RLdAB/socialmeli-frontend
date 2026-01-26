@@ -8,6 +8,10 @@ import Followed from "./pages/Followed.jsx";
 import Feed from "./pages/Feed.jsx";
 import Publish from "./pages/Publish.jsx";
 import Promos from "./pages/Promos.jsx";
+import Users from "./pages/Users.jsx";
+import FollowersRedirect from "./pages/FollowersRedirect.jsx";
+import PostsRedirect from "./pages/PostsRedirect.jsx";
+
 
 function getUserIdFromPath(pathname) {
   // tenta extrair /users/:id/...
@@ -46,8 +50,13 @@ export default function App() {
       <div style={{ padding: 16 }}>
         <Routes>
           <Route path="/" element={<Home activeUserId={activeUserId} />} />
-          <Route path="/publish" element={<Publish activeUserId={activeUserId} />} />
 
+
+          <Route path="/users" element={<Users />} />
+          <Route path="/posts" element={<PostsRedirect activeUserId={activeUserId} />} />
+          <Route path="/followers" element={<FollowersRedirect activeUserId={activeUserId} />} />
+
+          <Route path="/publish" element={<Publish activeUserId={activeUserId} />} />
           <Route path="/users/:userId/followers" element={<Followers />} />
           <Route path="/users/:userId/followed" element={<Followed />} />
           <Route path="/users/:userId/feed" element={<Feed />} />
