@@ -5,21 +5,10 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      "/users": {
+      "/api": {
         target: "http://localhost:8080",
         changeOrigin: true,
-      },
-      "/products": {
-        target: "http://localhost:8080",
-        changeOrigin: true,
-      },
-      "/sellers": {
-        target: "http://localhost:8080",
-        changeOrigin: true,
-      },
-      "/swagger": {
-        target: "http://localhost:8080",
-        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
       },
     },
   },

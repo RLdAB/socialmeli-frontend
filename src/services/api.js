@@ -1,4 +1,4 @@
-const BASE_URL = ""; // usando proxy do Vite
+const BASE_URL = "/api";
 
 async function request(path, options = {}) {
   const url = `${BASE_URL}${path}`;

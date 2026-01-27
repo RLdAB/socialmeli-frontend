@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { api } from "../services/api.js";
 import PostCard from "../components/PostCard.jsx";
@@ -13,26 +13,29 @@ export default function Feed() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // controla “request mais recente”
+  const reqIdRef = useRef(0);
+
   useEffect(() => {
-    let alive = true;
+    const reqId = ++reqIdRef.current;
+
     setLoading(true);
     setError("");
 
     api.getFeed(userId, { order, weeks })
       .then((res) => {
-        if (!alive) return;
+        // ignora se já existe uma request mais nova
+        if (reqId !== reqIdRef.current) return;
         setData(res);
       })
       .catch((e) => {
-        if (!alive) return;
+        if (reqId !== reqIdRef.current) return;
         setError(e.message || "Erro ao carregar feed");
       })
       .finally(() => {
-        if (!alive) return;
+        if (reqId !== reqIdRef.current) return;
         setLoading(false);
       });
-
-    return () => { alive = false; };
   }, [userId, order, weeks]);
 
   const posts = data?.posts || [];
@@ -42,7 +45,15 @@ export default function Feed() {
       <h1>Feed de publicações</h1>
       <p>User: {userId}</p>
 
-      <div style={{ display: "flex", gap: 12, alignItems: "center", margin: "12px 0", flexWrap: "wrap" }}>
+      <div
+        style={{
+          display: "flex",
+          gap: 12,
+          alignItems: "center",
+          margin: "12px 0",
+          flexWrap: "wrap",
+        }}
+      >
         <div>
           <label>Ordenar: </label>
           <select value={order} onChange={(e) => setOrder(e.target.value)}>
@@ -57,7 +68,7 @@ export default function Feed() {
             type="number"
             min="1"
             value={weeks}
-            onChange={(e) => setWeeks(Number(e.target.value))}
+            onChange={(e) => setWeeks(Number(e.target.value) || 1)}
             style={{ width: 80 }}
           />
         </div>
