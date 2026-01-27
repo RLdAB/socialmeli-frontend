@@ -10,11 +10,13 @@ export default function Users() {
   const [error, setError] = useState("");
 
   async function loadUsers() {
+    debugger
     setLoading(true);
     setError("");
 
     try {
       const res = await api.getUsers();
+      debugger
       setUsers(res?.users || []);
     } catch (e) {
       setError(e.message || "Erro ao listar usuários");
