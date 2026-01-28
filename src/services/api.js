@@ -117,4 +117,12 @@ export const api = {
   // Promos
   getPromosByUser: (userId) =>
     request(`/products/promo-pub/list?user_id=${userId}`),
+
+  //Seguir
+  followSeller: (userId, sellerId) =>
+    request(`/users/${userId}/follow/${sellerId}`, { method: "POST" }),
+  
+  // Deixar de seguir
+  unfollowSellerPut: (userId, sellerId) =>
+    request(`/users/${userId}/follow/${sellerId}`, { method: "PUT" }),
 };
