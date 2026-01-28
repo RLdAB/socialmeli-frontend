@@ -52,7 +52,7 @@ export default function App() {
           <Route path="/" element={<Home activeUserId={activeUserId} />} />
 
 
-          <Route path="/users" element={<Users />} />
+          <Route path="/users" element={<Users activeUserId={activeUserId} />} />
           <Route path="/posts" element={<PostsRedirect activeUserId={activeUserId} />} />
           <Route path="/followers" element={<FollowersRedirect activeUserId={activeUserId} />} />
 
