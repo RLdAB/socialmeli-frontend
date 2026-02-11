@@ -1,6 +1,7 @@
 import { Navigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
-export default function PostsRedirect({ activeUserId }) {
-    if (!activeUserId) return <Navigate to="/login" replace />;
-    return <Navigate to={`/users/${activeUserId}/feed`} replace />;
+export default function PostsRedirect() {
+    const { authUser } = useAuth();
+    return <Navigate to={`/users/${authUser.id}/feed`} replace />;
 }

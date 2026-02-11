@@ -14,11 +14,14 @@ export default function Navigation() {
       <nav style={{ display: "flex", gap: 12 }}>
         <Link to="/">Home</Link>
         <Link to="/users">Usuarios</Link>
-        <Link to={activeUserId ? "/followers" : "/login"}>Seguidos</Link>
-        <Link to={activeUserId ? `/users/${activeUserId}/followed` : "/login"}>Seguidores</Link>
+
+
+        {/* Sempre vai para a rota/atalho; o ProtectedRoute cuida da mensagem */}
+        <Link to="/followers">Seguidos</Link>
+        <Link to="/followed">Seguidores</Link>
         <Link to="/posts">Posts</Link>
-        <Link to={activeUserId ? "/publish" : "/login"}>Criar publicação</Link>
-        <Link to={activeUserId ? `/users/${activeUserId}/promos` : "/login"}>Promoções</Link>
+        <Link to="/publish">Criar publicação</Link>
+        <Link to="/promos">Promoções</Link>
       </nav>
 
       <div style={{ marginLeft: "auto" }}>

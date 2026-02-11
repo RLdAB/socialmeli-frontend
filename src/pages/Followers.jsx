@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { api } from "../services/api.js";
 
+
 function extractUsers(payload) {
   if (!payload) return [];
   if (Array.isArray(payload)) return payload;
@@ -11,12 +12,14 @@ function extractUsers(payload) {
 }
 
 export default function Followers() {
+
   const { userId } = useParams();
   const [order, setOrder] = useState("name_asc");
-
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+
 
   useEffect(() => {
     let alive = true;

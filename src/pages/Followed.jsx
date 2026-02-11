@@ -23,6 +23,8 @@ export default function Followed() {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
+
+
   async function load() {
     setLoading(true);
     setError("");
@@ -35,6 +37,7 @@ export default function Followed() {
       setLoading(false);
     }
   }
+
 
   useEffect(() => {
     load();
