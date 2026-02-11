@@ -1,6 +1,7 @@
-import { Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Navigation from "./components/Navigation.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import { useAuth } from "./contexts/AuthContext";
 
 import Home from "./pages/Home.jsx";
 import Followers from "./pages/Followers.jsx";
@@ -11,56 +12,73 @@ import Promos from "./pages/Promos.jsx";
 import Users from "./pages/Users.jsx";
 import FollowersRedirect from "./pages/FollowersRedirect.jsx";
 import PostsRedirect from "./pages/PostsRedirect.jsx";
-
-
-function getUserIdFromPath(pathname) {
-  // tenta extrair /users/:id/...
-  const m = pathname.match(/^\/users\/(\d+)(\/|$)/);
-  return m ? Number(m[1]) : null;
-}
+import Login from "./pages/Login.jsx";
 
 export default function App() {
-  const navigate = useNavigate();
-  const location = useLocation();
 
-  const [activeUserId, setActiveUserId] = useState(1);
-
-  // sincroniza state com URL se o userId estiver na rota
-  useEffect(() => {
-    const fromUrl = getUserIdFromPath(location.pathname);
-    if (fromUrl && fromUrl !== activeUserId) setActiveUserId(fromUrl);
-  }, [location.pathname]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  function handleChangeUser(nextId) {
-    setActiveUserId(nextId);
-
-    // mantém a "seção" atual ao trocar usuário
-    const path = location.pathname;
-    if (path.includes("/followers")) navigate(`/users/${nextId}/followers`);
-    else if (path.includes("/followed")) navigate(`/users/${nextId}/followed`);
-    else if (path.includes("/feed")) navigate(`/users/${nextId}/feed`);
-    else if (path.includes("/promos")) navigate(`/users/${nextId}/promos`);
-    else navigate(`/users/${nextId}/feed`); // default útil
-  }
+  const { authUser } = useAuth();
+  const activeUserId = authUser?.id ?? null;
 
   return (
     <div>
-      <Navigation activeUserId={activeUserId} onChangeUser={handleChangeUser} />
+      <Navigation />
 
       <div style={{ padding: 16 }}>
         <Routes>
+          <Route path="/login" element={<Login />} />
+
           <Route path="/" element={<Home activeUserId={activeUserId} />} />
-
-
           <Route path="/users" element={<Users activeUserId={activeUserId} />} />
+
+          {/* Riderects (vamos ajustar abaixo para respeitar login) */}
           <Route path="/posts" element={<PostsRedirect activeUserId={activeUserId} />} />
           <Route path="/followers" element={<FollowersRedirect activeUserId={activeUserId} />} />
 
-          <Route path="/publish" element={<Publish activeUserId={activeUserId} />} />
-          <Route path="/users/:userId/followers" element={<Followers />} />
-          <Route path="/users/:userId/followed" element={<Followed />} />
-          <Route path="/users/:userId/feed" element={<Feed />} />
-          <Route path="/users/:userId/promos" element={<Promos />} />
+          {/* Rotas protegidas */}
+          <Route
+            path="/publish"
+            element={
+              <ProtectedRoute>
+                <Publish activeUserId={activeUserId} />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/users/:userId/followers"
+            element={
+              <ProtectedRoute>
+                <Followers />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/users/:userId/followed"
+            element={
+              <ProtectedRoute>
+                <Followed />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/users/:userId/feed"
+            element={
+              <ProtectedRoute>
+                <Feed />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/users/:userId/promos"
+            element={
+              <ProtectedRoute>
+                <Promos />
+              </ProtectedRoute>
+            }
+          />
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
