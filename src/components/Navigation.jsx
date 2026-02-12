@@ -1,11 +1,11 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
+import LoginModal from "./LoginModal";
 
 export default function Navigation() {
   const { authUser, logout } = useAuth();
-  const navigate = useNavigate();
-
-  const activeUserId = authUser?.id;
+  const [loginOpen, setLoginOpen] = useState(false);
 
   return (
     <div style={{ display: "flex", gap: 16, alignItems: "center", padding: 16, borderBottom: "1px solid #ddd" }}>
@@ -14,9 +14,6 @@ export default function Navigation() {
       <nav style={{ display: "flex", gap: 12 }}>
         <Link to="/">Home</Link>
         <Link to="/users">Usuarios</Link>
-
-
-        {/* Sempre vai para a rota/atalho; o ProtectedRoute cuida da mensagem */}
         <Link to="/followers">Seguidos</Link>
         <Link to="/followed">Seguidores</Link>
         <Link to="/posts">Posts</Link>
@@ -26,7 +23,7 @@ export default function Navigation() {
 
       <div style={{ marginLeft: "auto" }}>
         {!authUser ? (
-          <button onClick={() => navigate("/login")}>Logar</button>
+          <button onClick={() => setLoginOpen(true)}>Logar</button>
         ) : (
           <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
             <span>{authUser.id} - {authUser.name}</span>
@@ -34,6 +31,8 @@ export default function Navigation() {
           </div>
         )}
       </div>
+
+      <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} />
     </div>
   );
 }
