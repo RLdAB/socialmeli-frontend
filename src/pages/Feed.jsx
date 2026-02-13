@@ -4,6 +4,7 @@ import { api } from "../services/api.js";
 import PostCard from "../components/PostCard.jsx";
 
 export default function Feed() {
+
   const { userId } = useParams();
 
   const [order, setOrder] = useState("date_desc");

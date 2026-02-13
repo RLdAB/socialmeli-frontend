@@ -1,9 +1,13 @@
 import { useState } from "react";
+import { useAuth } from "../contexts/AuthContext";
 import { api } from "../services/api.js";
 
-export default function Publish({ activeUserId }) {
+export default function Publish() {
+  const { authUser } = useAuth();
+
+
   const [form, setForm] = useState({
-    user_id: activeUserId ?? 1,
+    user_id: authUser.id,
     date: "",
     product_id: "",
     product_name: "",
@@ -63,8 +67,7 @@ export default function Publish({ activeUserId }) {
           user_id (seller):
           <input
             value={form.user_id}
-            onChange={(e) => setField("user_id", e.target.value)}
-            inputMode="numeric"
+            readOnly
           />
         </label>
 
